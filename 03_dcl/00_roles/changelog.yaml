@@ -1,0 +1,17 @@
+databaseChangeLog:
+  - changeSet:
+      id: dcl-roles-001
+      author: market-agri
+      labels: "HU-PLAT-006,dcl,roles"
+      changes:
+        - sqlFile:
+            path: 001_create_roles.sql
+            relativeToChangelogFile: true
+            splitStatements: false
+            stripComments: false
+      rollback:
+        - sqlFile:
+            path: ../../05_rollbacks/03_dcl/00_roles/001_create_roles.rollback.sql
+            relativeToChangelogFile: true
+            splitStatements: false
+            stripComments: false

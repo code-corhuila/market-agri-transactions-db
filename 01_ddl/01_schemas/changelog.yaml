@@ -1,0 +1,17 @@
+databaseChangeLog:
+  - changeSet:
+      id: ddl-schemas-001
+      author: market-agri
+      labels: "HU-PLAT-006,ddl,schemas"
+      changes:
+        - sqlFile:
+            path: 001_create_schema_transactions.sql
+            relativeToChangelogFile: true
+            splitStatements: false
+            stripComments: false
+      rollback:
+        - sqlFile:
+            path: ../../05_rollbacks/01_ddl/01_schemas/001_create_schema_transactions.rollback.sql
+            relativeToChangelogFile: true
+            splitStatements: false
+            stripComments: false
