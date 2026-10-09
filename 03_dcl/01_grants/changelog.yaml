@@ -1,8 +1,9 @@
 databaseChangeLog:
   - changeSet:
       id: dcl-grants-001
-      author: market-agri
+      author: alejandro538
       labels: "HU-PLAT-006,dcl,grants"
+      comment: "Least privilege on the transactions schema: the writer reads, inserts and updates (no DELETE); the reader only reads."
       changes:
         - sqlFile:
             path: 001_grant_schema_privileges.sql
@@ -17,8 +18,9 @@ databaseChangeLog:
             stripComments: false
   - changeSet:
       id: dcl-grants-002
-      author: market-agri
+      author: alejandro538
       labels: "HU-PLAT-006,dcl,grants"
+      comment: "transactions_app, created by market-agri-infra, receives transactions_writer (Anexo J.7)."
       changes:
         - sqlFile:
             path: 002_grant_writer_to_app.sql

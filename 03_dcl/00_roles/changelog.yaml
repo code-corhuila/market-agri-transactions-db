@@ -1,8 +1,9 @@
 databaseChangeLog:
   - changeSet:
       id: dcl-roles-001
-      author: market-agri
+      author: alejandro538
       labels: "HU-PLAT-006,dcl,roles"
+      comment: "transactions_reader and transactions_writer (NOLOGIN). They carry permissions only on the transactions schema."
       changes:
         - sqlFile:
             path: 001_create_roles.sql
