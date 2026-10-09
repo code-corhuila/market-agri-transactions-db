@@ -6,6 +6,13 @@ This repository owns the `transactions` schema, its domain roles, grants, and mi
 instance, persistent volume, and `transactions_app` login belong to `market-agri-infra` (Anexo J,
 ADR-010). The API connects as `transactions_app`; it does not own or run schema migrations (ADR-011).
 
+Governance, ADRs and the data model live in
+[`market-agri-docs`](https://github.com/code-corhuila/market-agri-docs): see
+[ADR-010](https://github.com/code-corhuila/market-agri-docs/blob/main/05-architecture/decisions/records/ADR-010-data-isolation.md)
+(data isolation: one instance, one schema per domain) and
+[ADR-011](https://github.com/code-corhuila/market-agri-docs/blob/main/05-architecture/decisions/records/ADR-011-migrations-liquibase.md)
+(migrations with Liquibase, only in the `-db` repository).
+
 ## Layout
 
 ```
@@ -26,7 +33,10 @@ deploy/compose.yml                deliberate Liquibase runner, included by infra
    applied changeset; make corrections in a new changeset.
 3. `transactions_app` receives `transactions_writer`; the application login and its secret are created
    by infra, never stored here. No transaction-domain role receives privileges on another schema.
-4. Keep database deployment separate from API startup. Migrate first, then deploy the API.
+4. `transactions_writer` has no `DELETE`, on purpose (same rule as `market-agri-catalog-db`): payments and
+   ledger entries are append-only, and a state change is an `UPDATE` or a new row. A changeset that needs to
+   delete data runs as the migration user, not as `transactions_app`.
+5. Keep database deployment separate from API startup. Migrate first, then deploy the API.
 
 ## Run it
 
