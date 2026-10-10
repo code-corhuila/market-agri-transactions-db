@@ -1,1 +1,14 @@
-databaseChangeLog: []
+databaseChangeLog:
+  - changeSet:
+      id: ddl-indexes-001
+      author: alejandro
+      comment: Add lookup, foreign-key, provider, and unpublished-outbox indexes.
+      labels: "HU-PLAT-006,ddl,indexes"
+      changes:
+        - sqlFile:
+            path: 001_create_transaction_indexes.sql
+            relativeToChangelogFile: true
+      rollback:
+        - sqlFile:
+            path: ../../05_rollbacks/01_ddl/10_indexes/001_create_transaction_indexes.rollback.sql
+            relativeToChangelogFile: true

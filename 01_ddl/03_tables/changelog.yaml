@@ -1,1 +1,14 @@
-databaseChangeLog: []
+databaseChangeLog:
+  - changeSet:
+      id: ddl-tables-001
+      author: alejandro
+      comment: Create append-only payment, ledger, idempotency, and outbox tables (B2).
+      labels: "HU-PLAT-006,ddl,tables"
+      changes:
+        - sqlFile:
+            path: 001_create_payment_and_ledger_tables.sql
+            relativeToChangelogFile: true
+      rollback:
+        - sqlFile:
+            path: ../../05_rollbacks/01_ddl/03_tables/001_create_payment_and_ledger_tables.rollback.sql
+            relativeToChangelogFile: true

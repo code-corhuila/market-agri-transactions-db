@@ -1,0 +1,8 @@
+DROP INDEX IF EXISTS transactions.idx_outbox_event_aggregate;
+DROP INDEX IF EXISTS transactions.idx_outbox_event_unpublished;
+DROP INDEX IF EXISTS transactions.idx_idempotency_key_transaction_id;
+DROP INDEX IF EXISTS transactions.idx_ledger_entry_transaction_id;
+DROP INDEX IF EXISTS transactions.idx_payment_transaction_stripe_payment_intent_id;
+DROP INDEX IF EXISTS transactions.idx_payment_transaction_stripe_session_id;
+DROP INDEX IF EXISTS transactions.idx_payment_transaction_producer_created_at;
+DROP INDEX IF EXISTS transactions.idx_payment_transaction_buyer_created_at;
