@@ -1,1 +1,14 @@
-databaseChangeLog: []
+databaseChangeLog:
+  - changeSet:
+      id: ddl-alter-001
+      author: alejandro
+      comment: Add restrictive references within the transactions schema.
+      labels: "HU-PLAT-006,ddl,alter"
+      changes:
+        - sqlFile:
+            path: 001_add_transaction_table_foreign_keys.sql
+            relativeToChangelogFile: true
+      rollback:
+        - sqlFile:
+            path: ../../05_rollbacks/01_ddl/04_alter/001_add_transaction_table_foreign_keys.rollback.sql
+            relativeToChangelogFile: true

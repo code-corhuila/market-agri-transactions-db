@@ -38,6 +38,18 @@ deploy/compose.yml                deliberate Liquibase runner, included by infra
    delete data runs as the migration user, not as `transactions_app`.
 5. Keep database deployment separate from API startup. Migrate first, then deploy the API.
 
+## B2 tables
+
+| Table | Purpose | Main constraints |
+|---|---|---|
+| `payment_transaction` | Payment lifecycle and purchase snapshots | `PENDING`, `CONFIRMED`, or `FAILED`; positive quantity and `amount_cents`; unique Stripe references when present |
+| `ledger_entry` | Append-only debit or credit entries for a payment | Positive `amount_cents`; restrictive FK to `payment_transaction` |
+| `idempotency_key` | Request fingerprint and stored response for safe retries | Primary key `(owner_id, key_value)`; restrictive FK to `payment_transaction` |
+| `outbox_event` | Durable `TransactionConfirmed` / `TransactionFailed` messages for the relay | JSON payload; unpublished-event and aggregate indexes |
+
+Money is stored as integer COP cents (ADR-012). Payment and ledger rows are retained; status
+changes update the payment row, while ledger entries and outbox events are appended.
+
 ## Run it
 
 From `market-agri-infra`, after the transactions include and environment variable are configured:
