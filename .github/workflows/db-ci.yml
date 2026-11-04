@@ -82,6 +82,10 @@ jobs:
           psql -c "DROP TABLE public.__ci_privilege_probe;" -c "DROP TABLE transactions.__ci_privilege_probe;"
           echo "::endgroup::"
 
+          echo "::group::3b. table rules (tests/*.sql), on the built schema"
+          for t in tests/*.sql; do echo "-- $t"; psql < "$t"; done
+          echo "::endgroup::"
+
           echo "::group::4. full rollback removes the domain schema and roles"
           lb rollback-count 999
           left=$(psql -At -c "SELECT (SELECT count(*) FROM pg_namespace WHERE nspname = 'transactions')

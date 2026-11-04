@@ -1,0 +1,2 @@
+ALTER TABLE transactions.idempotency_key DROP CONSTRAINT fk_idempotency_key_payment_transaction;
+ALTER TABLE transactions.ledger_entry DROP CONSTRAINT fk_ledger_entry_payment_transaction;
