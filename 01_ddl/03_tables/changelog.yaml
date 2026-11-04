@@ -1,1 +1,69 @@
-databaseChangeLog: []
+databaseChangeLog:
+  - changeSet:
+      id: ddl-tables-001
+      author: contreras-elkin
+      labels: "HU-PLAT-006,ddl,tables"
+      comment: "payment_transaction - one payment for a quantity of a product (I-06), with the Wompi fields of ADR-019."
+      changes:
+        - sqlFile:
+            path: 001_create_payment_transaction.sql
+            relativeToChangelogFile: true
+            splitStatements: false
+            stripComments: false
+      rollback:
+        - sqlFile:
+            path: ../../05_rollbacks/01_ddl/03_tables/001_create_payment_transaction.rollback.sql
+            relativeToChangelogFile: true
+            splitStatements: false
+            stripComments: false
+  - changeSet:
+      id: ddl-tables-002
+      author: contreras-elkin
+      labels: "HU-PLAT-006,ddl,tables"
+      comment: "ledger_entry - what the producer is owed for a confirmed payment (D-C14)."
+      changes:
+        - sqlFile:
+            path: 002_create_ledger_entry.sql
+            relativeToChangelogFile: true
+            splitStatements: false
+            stripComments: false
+      rollback:
+        - sqlFile:
+            path: ../../05_rollbacks/01_ddl/03_tables/002_create_ledger_entry.rollback.sql
+            relativeToChangelogFile: true
+            splitStatements: false
+            stripComments: false
+  - changeSet:
+      id: ddl-tables-003
+      author: contreras-elkin
+      labels: "HU-PLAT-006,ddl,tables"
+      comment: "outbox_event - events written with the state change, published by the relay (ADR-014)."
+      changes:
+        - sqlFile:
+            path: 003_create_outbox_event.sql
+            relativeToChangelogFile: true
+            splitStatements: false
+            stripComments: false
+      rollback:
+        - sqlFile:
+            path: ../../05_rollbacks/01_ddl/03_tables/003_create_outbox_event.rollback.sql
+            relativeToChangelogFile: true
+            splitStatements: false
+            stripComments: false
+  - changeSet:
+      id: ddl-tables-004
+      author: contreras-elkin
+      labels: "HU-PLAT-006,ddl,tables"
+      comment: "idempotency_key - the key each payment was created with (P-9.3, D-C35)."
+      changes:
+        - sqlFile:
+            path: 004_create_idempotency_key.sql
+            relativeToChangelogFile: true
+            splitStatements: false
+            stripComments: false
+      rollback:
+        - sqlFile:
+            path: ../../05_rollbacks/01_ddl/03_tables/004_create_idempotency_key.rollback.sql
+            relativeToChangelogFile: true
+            splitStatements: false
+            stripComments: false

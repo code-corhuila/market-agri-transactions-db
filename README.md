@@ -38,6 +38,21 @@ deploy/compose.yml                deliberate Liquibase runner, included by infra
    delete data runs as the migration user, not as `transactions_app`.
 5. Keep database deployment separate from API startup. Migrate first, then deploy the API.
 
+## Data dictionary
+
+Spec: `market-agri-docs` `06-data/models.md` (*Service: transactions*), `07-api/api-contract.md` §4.4,
+ADR-014 (outbox), ADR-019 (Wompi) and ADR-029 (money in integer centavos). No table has a foreign key
+to another schema: `conversation_id`, `product_id`, `buyer_id` and `producer_id` are plain ids.
+
+| Table | Purpose | Main rules |
+|---|---|---|
+| `payment_transaction` | One payment for a quantity of a product, created by the checkout saga (I-06) | `id` = the reservation id; snapshots of names, unit and `unit_price_cents`; `amount_cents > 0`; `status` `PENDING`/`CONFIRMED`/`FAILED`, each with only its own timestamp; one `PENDING` per conversation; `payment_method` (`CARD`, `NEQUI`, `PSE`, `BANCOLOMBIA_TRANSFER`, `OTHER`) only after the result; `CONFIRMED` needs the provider's `gateway_transaction_id`, unique; `expires_at` for the expiry job |
+| `ledger_entry` | What the producer is owed for a confirmed payment (D-C14) | One per transaction; `net_amount_cents = gross_amount_cents − platform_fee_cents`; `status` `PENDING_DISBURSEMENT`/`DISBURSED` |
+| `outbox_event` | Events written with the state change, published by the relay | `event_id` = envelope id; `TransactionConfirmed` or `TransactionFailed`; `published_at` NULL until the broker confirms |
+| `idempotency_key` | The key each payment was created with (P-9.3) | Primary key `(owner_id, key_value)`; key 8–128 characters |
+
+The rules are tested in `tests/payment-tables.sql`, run by `db-ci.yml` (step 3b).
+
 ## Run it
 
 From `market-agri-infra`, after the transactions include and environment variable are configured:
