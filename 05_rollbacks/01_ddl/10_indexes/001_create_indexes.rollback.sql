@@ -1,0 +1,8 @@
+DROP INDEX transactions.idx_outbox_event_unpublished;
+DROP INDEX transactions.idx_idempotency_key_transaction_id;
+DROP INDEX transactions.uq_ledger_entry_transaction_id;
+DROP INDEX transactions.idx_payment_transaction_pending_expires_at;
+DROP INDEX transactions.uq_payment_transaction_gateway_transaction_id;
+DROP INDEX transactions.uq_payment_transaction_pending_conversation;
+DROP INDEX transactions.idx_payment_transaction_producer_id_created_at;
+DROP INDEX transactions.idx_payment_transaction_buyer_id_created_at;

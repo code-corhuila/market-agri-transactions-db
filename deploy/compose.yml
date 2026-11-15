@@ -1,0 +1,26 @@
+# Deliberate migration runner. PostgreSQL and transactions_app are owned by infra.
+services:
+  transactions-db-migrate:
+    image: liquibase/liquibase:4.29
+    profiles: [tooling]
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - ../:/workspace:ro
+    entrypoint:
+      - liquibase
+      - --search-path=/workspace
+      - --changelog-file=changelog/changelog-master.yaml
+      - --url=jdbc:postgresql://postgres:5432/${PG_DATABASE:?set PG_DATABASE}
+      - --username=${PG_ADMIN_USER:?set PG_ADMIN_USER}
+      - --password=${PG_ADMIN_PASSWORD:?set PG_ADMIN_PASSWORD}
+      - --database-changelog-table-name=databasechangelog_transactions
+      - --database-changelog-lock-table-name=databasechangeloglock_transactions
+    command: [update]
+    networks: [platform]
+
+networks:
+  platform:
+    name: platform-${ENV:?set ENV}
+    external: true

@@ -1,0 +1,1 @@
+REVOKE transactions_writer FROM transactions_app;
